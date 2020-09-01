@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Notitas</string>
+    <string name="add_note">Adicionar Nota</string>
+    <string name="list_title">Actividades</string>
+    <string name="btn_new">Nuevo</string>
+    <string name="btn_delete">Borrar</string>
+    <string name="btn_clear">Limpiar</string>
+</resources>
