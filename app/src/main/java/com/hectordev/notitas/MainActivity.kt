@@ -11,7 +11,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val key = "NOTES"
+    companion object {
+        const val KEY_NOTES = "NOTES"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,18 +26,17 @@ class MainActivity : AppCompatActivity() {
         var prefs = PreferenceManager.getDefaultSharedPreferences(this  )
 
         // loadValues()
-        val values = prefs.getString(key, "")
+        val values = prefs.getString(KEY_NOTES, "")
         if (!values.isNullOrBlank()) {
             // convert string to array
             val activities = values.split(",").toMutableList() // .toTypedArray()
-            println(activities)
+            // println(activities)
             for (element in activities) {
                 itemList.add(element.trimStart())
                 listView.adapter = adapter
                 adapter.notifyDataSetChanged()
             }
         }
-
 
         // Adicionamos el item cuando el boton adicionar es presionado
         add.setOnClickListener {
@@ -45,11 +46,8 @@ class MainActivity : AppCompatActivity() {
             // limpiamos elitem añadido
             editText.text.clear()
 
-            val editor = prefs.edit()
-            editor.remove(key)
-            editor.putString(key, itemList.joinToString())
-            editor.apply()
-            val values = prefs.getString(key, "")
+            // Guardamos en shared preferences
+            saveItems(itemList.joinToString())
 
         }
 
@@ -72,11 +70,8 @@ class MainActivity : AppCompatActivity() {
             position.clear()
             adapter.notifyDataSetChanged()
 
-            val editor = prefs.edit()
-            editor.remove(key)
-            editor.putString(key, itemList.joinToString())
-            editor.apply()
-            val values = prefs.getString(key, "")
+            // Guardamos en shared preferences
+            saveItems(itemList.joinToString())
 
         }
 
@@ -85,10 +80,24 @@ class MainActivity : AppCompatActivity() {
             itemList.clear()
             adapter.notifyDataSetChanged()
 
-            val editor = prefs.edit()
-            editor.remove(key)
-            editor.apply()
+            clearAll()
         }
 
     }
+
+    fun saveItems(items: String) {
+        var prefs = PreferenceManager.getDefaultSharedPreferences(this  )
+        val editor = prefs.edit()
+        editor.remove(KEY_NOTES)
+        editor.putString(KEY_NOTES, items)
+        editor.apply()
+    }
+
+    fun clearAll() {
+        var prefs = PreferenceManager.getDefaultSharedPreferences(this  )
+        val editor = prefs.edit()
+        editor.remove(KEY_NOTES)
+        editor.apply()
+    }
+
 }
