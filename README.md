@@ -1,5 +1,5 @@
 # Notitas
-An Example in Kotlin with SharedPreferences
+An Example in Kotlin with ArrayList and SharedPreferences.
 
 
 
